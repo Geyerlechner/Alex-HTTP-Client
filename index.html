@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ALEX</title>
+</head>
+
+<script>
+	function GetHTTPRequest()
+	{
+		let url = document.getElementById('url').value;
+		let apiKey = document.getElementById('apiKey').value;
+
+		if(url)
+		{
+			if(apiKey.length >= 1)
+				url = url.concat('&WebApiServerKey=', apiKey);
+
+			fetch (url).then (function (response) {
+				return response.json();
+			}).then (function (data) {
+				document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);	
+			}).catch (function (error) {
+				document.getElementById("json").innerHTML = "Es konnte keine Verbindung zum Alex-Webserver hergestellt werden.\n" + error;
+			});								
+		}
+		else
+		{
+			document.getElementById("json").innerHTML = "Bitte geben Sie eine URL ein";	
+		}
+	}
+</script>
+
+<body>
+	<div class="container">
+		<form>
+			<table>
+				<tr>
+				  <td><b>URL:</b></td>
+					  <td>
+						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?">
+					</td>
+				</tr>
+				<tr>
+				  <td><b>API-Key:</b></td>
+				  <td>
+					<input type="text" style="width: 35rem" id="apiKey">
+				</td>
+				</tr>
+			  </table> 	
+			  <input type="button" onclick='GetHTTPRequest()' value="Absenden">
+			  <input type="reset" value="Zurücksetzen">
+		</form>
+		  <h3>Ausgabe</h3>
+		  <pre id="json"></pre>
+	</div>
+</body>
+</html>
