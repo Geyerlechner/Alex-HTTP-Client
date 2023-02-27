@@ -10,7 +10,6 @@
 <script>
 	function GetHTTPRequest()
 	{
-
 		let url = document.getElementById('url').value;
 		let apiKey = document.getElementById('apiKey').value;
 
@@ -20,6 +19,7 @@
 			{
 				var myHeaders = new Headers();
 				myHeaders.append("Authorization", btoa(apiKey));
+				
 				var requestOptions = {
 					methods: 'GET'
 				,	headers: myHeaders
@@ -48,13 +48,13 @@
 				<tr>
 					<td><b>API-Key:</b></td>
 					<td>
-					  <input type="text" style="width: 35rem" id="apiKey" value="9274cd2a-214c-461c-a943-aa7b487287cb">
+					  <input type="text" style="width: 35rem" id="apiKey">
 				  </td>
 				  </tr>
 				<tr>
 				  <td><b>URL:</b></td>
 					  <td>
-						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?" value="http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true">
+						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?">
 					</td>
 				</tr>
 			  </table> 	
