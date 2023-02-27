@@ -8,30 +8,71 @@
 </head>
 
 <script>
-	function GetHTTPRequest()
+
+	function http()
 	{
-		let url = document.getElementById('url').value;
-		let apiKey = document.getElementById('apiKey').value;
-
-		if(url)
-		{
-			if(apiKey.length >= 1)
-				url = url.concat('&WebApiServerKey=', apiKey);
-
-			fetch (url)
-			.then (function (response) {
-				return response.json();
-			}).then (function (data) {
-				document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);	
-			}).catch (function (error) {
-				document.getElementById("json").innerHTML = "Es konnte keine Verbindung zum Alex-Webserver hergestellt werden.\n" + error;
-			});								
-		}
-		else
-		{
-			document.getElementById("json").innerHTML = "Bitte geben Sie eine URL ein";	
-		}
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", 'http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true', true );
+		xmlHttp.setRequestHeader("Authorization", 'OTI3NGNkMmEtMjE0Yy00NjFjLWE5NDMtYWE3YjQ4NzI4N2Ni');
+		xmlHttp.send(null);
+		return xmlHttp.responseText;
 	}
+
+	function HTTPGET()
+	{
+		const headers = { 
+			'Authorization': 'OTI3NGNkMmEtMjE0Yy00NjFjLWE5NDMtYWE3YjQ4NzI4N2Ni',
+			"Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+		};
+		fetch('http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true', 
+		{ 	method: 'get',
+			mode: 'cors',
+			headers
+		}
+		)
+			.then(response => response.json())
+			.then(data => console.log(data.name));
+	}
+
+	// function GetHTTPRequest()
+	// {
+	// 	let url = document.getElementById('url').value;
+	// 	let apiKey = document.getElementById('apiKey').value;
+
+	// 	if(url)
+	// 	{
+	// 		if(apiKey.length >= 1)
+	// 			url = url.concat('&WebApiServerKey=', apiKey);
+
+	// 		fetch (url, 
+	// 		{
+	// 			method: 'GET',
+	// 			mode: 'no-cors',
+	// 			redirect: 'follow',
+	// 			headers: {
+	// 			Accept: 'application.json',
+    // 			'Content-Type': 'application/json',
+	// 			"X-My-Custom-Header": "value-v",
+	// 			"Access-Control-Allow-Origin": "*",
+	// 			"Authorization": "OTI3NGNkMmEtMjE0Yy00NjFjLWE5NDMtYWE3YjQ4NzI4N2Ni"
+	// 			}
+	// 		}
+	// 		)
+	// 		.then (function (response) {
+	// 			return response.json();
+	// 		}).then (function (data) {
+	// 			document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);	
+	// 		}).catch (function (error) {
+	// 			document.getElementById("json").innerHTML = "Es konnte keine Verbindung zum Alex-Webserver hergestellt werden.\n" + error;
+	// 		});								
+	// 	}
+	// 	else
+	// 	{
+	// 		document.getElementById("json").innerHTML = "Bitte geben Sie eine URL ein";	
+	// 	}
+	// }
 </script>
 
 <body>
@@ -47,11 +88,12 @@
 				<tr>
 				  <td><b>URL:</b></td>
 					  <td>
-						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?">
+						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?" value="http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true">
 					</td>
 				</tr>
 			  </table> 	
-			  <input type="button" onclick='GetHTTPRequest()' value="Absenden">
+			  <input type="button" onclick='HTTPGET()' value="Absenden">
+			  <!-- <input type="button" onclick='GetHTTPRequest()' value="Absenden"> -->
 			  <input type="reset" value="Zurücksetzen">
 		</form>
 		  <h3>Ausgabe</h3>
