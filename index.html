@@ -13,16 +13,14 @@
 	{
 		var myHeaders = new Headers();
 		myHeaders.append("Authorization", "OTI3NGNkMmEtMjE0Yy00NjFjLWE5NDMtYWE3YjQ4NzI4N2Ni");
-
+		
 		var requestOptions = {
-			method: 'GET'
-		,	mode: 'cors'
-		,	headers: myHeaders
-		,	'Access-Control-Allow-Origin': '*'
-		,	redirect: 'follow'
+			methods: 'GET',
+			headers: myHeaders,
+			redirect: 'follow'
 		};
 
-		fetch("http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true", requestOptions) //&WebApiServerKey=9274cd2a-214c-461c-a943-aa7b487287cb
+		fetch("http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true", requestOptions)
 		.then(response => response.text())
 		.then(result => console.log(result))
 		.catch(error => console.log('error', error));
