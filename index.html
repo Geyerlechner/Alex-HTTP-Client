@@ -1,68 +1,75 @@
 <!DOCTYPE html>
-<html lang="de">
+
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ALEX</title>
+	<title>http-client-example</title>
 </head>
 
 <script>
-	function GetHTTPRequest()
-	{
+function send() {
 		let url = document.getElementById('url').value;
-		let apiKey = document.getElementById('apiKey').value;
+		if (url) {
+			var requestOptions = {
+				headers: new Headers(),
+				redirect: 'follow'
+			};
 
-		if(url)
-		{
-			if(apiKey.length >= 1)
-			{
-				var myHeaders = new Headers();
-				myHeaders.append("Authorization", btoa(apiKey));
-				
-				var requestOptions = {
-					methods: 'GET'
-				,	headers: myHeaders
-				,	redirect: 'follow'
-				};
+			let apiKey = document.getElementById('apiKey').value;
+			if (apiKey.length > 0)
+				requestOptions.headers.append('Authorization', btoa(apiKey));
+
+			let body = document.getElementById('body').value;
+			if (body.length > 0) {
+				requestOptions.headers.append('Content-Type', 'application/json');
+				requestOptions.method = 'POST';
+				requestOptions.body = body;
 			}
 
+			let responseOutput = document.getElementById('response');
 			fetch(url, requestOptions)
-			.then(function (response){
-				return response.json();
-			})
-			.then(function (data){
-				document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
-			})
-			.catch(function (error){
-				document.getElementById("json").innerHTML = "Es konnte keine Verbindung zum Alex-Webserver hergestellt werden.\n" + error;
-			});
+				.then(response => response.text())
+				.then(function (result) {
+					responseOutput.value = JSON.stringify(JSON.parse(result), undefined, 2);
+				})
+				.catch(function (error) {
+					responseOutput.value = error;
+				});
 		}
 	}
 </script>
 
 <body>
-	<div class="container">
+	<div>
 		<form>
 			<table>
 				<tr>
 					<td><b>API-Key:</b></td>
 					<td>
-					  <input type="text" style="width: 35rem" id="apiKey">
-				  </td>
-				  </tr>
-				<tr>
-				  <td><b>URL:</b></td>
-					  <td>
-						<input type="text" style="width: 35rem" id="url" placeholder="http://localhost:4401/EmployeeDayIntervals?">
+						<input type="text" style="width: 60rem" id="apiKey"
+							value="9274cd2a-214c-461c-a943-aa7b487287cb">
 					</td>
 				</tr>
-			  </table> 	
-			  <input type="button" onclick='GetHTTPRequest()' value="Absenden">
-			  <input type="reset" value="Zurücksetzen">
-		</form>
-		  <h3>Ausgabe</h3>
-		  <pre id="json"></pre>
+				<tr>
+					<td><b>URL:</b></td>
+					<td>
+						<input type="text" style="width: 60rem" id="url"
+							placeholder="http://localhost:4401/EmployeeDayIntervals?"
+							value="http://localhost:4480/EmployeeDayIntervals?id=10880&begin=01.12.2021&end=01.12.2021&allstates=true">
+					</td>
+				</tr>
+				<tr>
+					<td><b>Body:</b></td>
+					<td>
+						<textarea id="body" style="width: 60rem; height: 10rem;" cols="30" rows="10"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="button" onclick='send()' value="Send">
+			</form>
+
+		<h3>Response</h3>
+		<textarea id="response" style="width: 65rem; height: 10rem;" cols="30" rows="10"></textarea>
 	</div>
 </body>
+
 </html>
